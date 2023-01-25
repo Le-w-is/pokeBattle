@@ -2,6 +2,11 @@ body {
     background: white
 }
 
+#pokeCards {
+    display: flex;
+    padding: 2px 16px;
+}
+
 .card {
     width: 25%;
     background: green;
@@ -19,6 +24,10 @@ body {
     box-shadow: 0 50px 100px 0 rgba(0, 0, 0, 0.2);
 }
 
-.container {
-    padding: 2px 16px;
+#resultsBox {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    padding-left: 15%;
+    padding-top: 5%;
 }
