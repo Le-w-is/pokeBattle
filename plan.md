@@ -11,11 +11,9 @@
 
 
 //fight scores ✅
-// add up all the numbers and divide by 6 = total power
-// compare that to computers total power
-// declare a winner
-
-
+// add up all the numbers and divide by 6 = total power ✅
+// compare that to computers total power ✅
+// declare a winner ✅
 
 
 //competition
