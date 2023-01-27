@@ -12,9 +12,7 @@
 
 <body>
 
-    <div id="playerChoiceForm">
-        <input id="playerPokemonChoice" type="text" placeholder="Pokemon name"></input>
-    </div>
+
 
     <div class="container" id="pokeCards">
         <div class="card" id="playerPokeCard" hidden=true>
@@ -28,9 +26,27 @@
             <h2 id="playerSpeed"> </h2>
         </div>
 
+        <div class="container" id="resultsBox">
+            <h3>Please enter a pokemon name or number</h3>
+
+            <div id="playerChoiceForm">
+                <input id="playerPokemonChoice" type="text" placeholder="Pokemon name"></input>
+            </div>
+
+            <div id="playerStatChoiceForm">
+                <input id="playerStatChoice" type="text" placeholder="Stat name" hidden=true></input>
+            </div>
+
+
+            <div id="totalPlayerPower"></div>
+            <div id="totalComputerPower"></div>
+            <div id="result"></div>
+            <div id="totals"></div>
+            <div id="gameRound"></div>
+        </div>
+
         <div class="card" id="computerPokeCard" hidden=true>
-            <h1 id="computerPokeName">
-            </h1>
+            <h1 id="computerPokeName"></h1>
             <img id="computerSprite" src="" style="width:50%"></img>
             <h2 id="computerAttack"></h2>
             <h2 id="computerDefense"> </h2>
@@ -40,14 +56,7 @@
         </div>
 
 
-        <div class="container" id="resultsBox">
-            <div id="totalPlayerPower"></div>
-            <div id="totalComputerPower"></div>
-            <div id="result"></div>
-            <div id="totals"></div>
-            <div id="gameRound"></div>
 
-        </div>
     </div>
     </div>
     <script src='scripts.js'></script>

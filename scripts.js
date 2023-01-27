@@ -4,31 +4,36 @@
 // DEFINEING VARIABLES
 
 //display variables
-let playerSprite = document.querySelector("#playerSprite");
-let computerSprite = document.querySelector("#computerSprite");
-let playerPokeName = document.querySelector("#playerPokeName");
-let playerAttack = document.querySelector("#playerAttack");
-let playerDefense = document.querySelector("#playerDefense");
-let playerSpeed = document.querySelector("#playerSpeed");
-let playerSpecialAttack = document.querySelector("#playerSpecialAttack");
-let playerSpecialDefense = document.querySelector("#playerSpecialDefense");
+const playerPokeCard = document.querySelector("#playerPokeCard")
+const playerPokeName = document.querySelector("#playerPokeName");
+const playerSprite = document.querySelector("#playerSprite");
+const playerAttack = document.querySelector("#playerAttack");
+const playerDefense = document.querySelector("#playerDefense");
+const playerSpeed = document.querySelector("#playerSpeed");
+const playerSpecialAttack = document.querySelector("#playerSpecialAttack");
+const playerSpecialDefense = document.querySelector("#playerSpecialDefense");
 
-let computerPokeName = document.querySelector("#computerPokeName");
-let computerAttack = document.querySelector("#computerAttack");
-let computerDefense = document.querySelector("#computerDefense");
-let computerSpeed = document.querySelector("#computerSpeed");
-let computerSpecialAttack = document.querySelector("#computerSpecialAttack");
-let computerSpecialDefense = document.querySelector("#computerSpecialDefense");
-let computerPokemonChoice = document.querySelector("#computerPokemonChoice");
-let gameRoundNumber = 0;
+
+const computerPokeCard = document.querySelector("#computerPokeCard")
+const computerPokeName = document.querySelector("#computerPokeName");
+const computerSprite = document.querySelector("#computerSprite");
+const computerAttack = document.querySelector("#computerAttack");
+const computerDefense = document.querySelector("#computerDefense");
+const computerSpeed = document.querySelector("#computerSpeed");
+const computerSpecialAttack = document.querySelector("#computerSpecialAttack");
+const computerSpecialDefense = document.querySelector("#computerSpecialDefense");
+
+
 let gameRound = document.querySelector("#gameRound");
-let playerPokeCard = document.querySelector("#playerPokeCard")
-let computerPokeCard = document.querySelector("#computerPokeCard")
+let gameRoundNumber = 0;
 
 
 //choice variables
 let playerPokemonChoice = document.querySelector("#playerPokemonChoice");
+let playerStatChoice = document.querySelector("#playerStatChoice")
 let computerChoice = Math.floor(Math.random() * 1009);
+let playerChoice;
+let playerStat;
 
 
 // result variables
@@ -37,12 +42,15 @@ let totalPlayerPower = document.querySelector("#totalPlayerPower")
 let totalComputerPower = document.querySelector("#totalComputerPower")
 let result = document.querySelector("#result");
 let totals = document.querySelector("#totals")
+let playerScore;
+let computerScore;
 let win = 0;
 let lose = 0;
 
 
 //EVENT LISTENERS
-playerPokemonChoice.addEventListener(`keydown`, handlePlayerPokemon);
+playerPokemonChoice.addEventListener("keydown", handlePlayerPokemon);
+playerStatChoice.addEventListener("keydown", handlePlayerStat);
 
 //FUNCTIONS
 
@@ -50,14 +58,19 @@ playerPokemonChoice.addEventListener(`keydown`, handlePlayerPokemon);
 function handlePlayerPokemon(e) {
     if (e.key == `Enter`) {
         playerChoice = playerPokemonChoice.value;
-        computerChoice = Math.floor(Math.random() * 1009)
-        playerPokeCard.removeAttribute("hidden")
-        computerPokeCard.removeAttribute("hidden")
+        playerPokeCard.removeAttribute("hidden");
+        playerStatChoice.removeAttribute("hidden")
         displayPlayerPokemon(playerChoice);
-        displayComputerPokemon(computerChoice);
-        fight();
     }
 };
+
+function handlePlayerStat(e) {
+    if (e.key == "Enter") {
+        playerStat = playerStatChoice.value;
+        computerPokeCard.removeAttribute("hidden");
+        fight();
+    }
+}
 
 
 // fetch function to get the promise from the api and set the date that is needed to a variable
@@ -100,22 +113,46 @@ async function displayComputerPokemon() {
 async function fight() {
     if (gameRoundNumber < 6) {
         let playerData = await getPokemonData(playerChoice);
+        computerChoice = Math.floor(Math.random() * 1009);
         let computerData = await getPokemonData(computerChoice);
-        let playerScore = playerData.hp + playerData.attack + playerData.defense + playerData.specialAttack + playerData.specialDefense + playerData.speed
-        let computerScore = computerData.hp + computerData.attack + computerData.defense + computerData.specialAttack + computerData.specialDefense + computerData.speed
-        totalPlayerPower.innerHTML = `your player score is ${playerScore}     `;
-        totalComputerPower.innerHTML = `the computer score is ${computerScore}     `;
+        let playerScore;
+        let computerScore;
 
+        if (playerStat == "attack") {
+            playerScore = playerData.attack;
+            computerScore = computerData.attack;
+        } else if (playerStat == "defense") {
+            playerScore = playerData.defense;
+            computerScore = computerData.defense;
+        } else if (playerStat == "special attack") {
+            playerScore = playerData.specialAttack;
+            computerScore = computerData.specialAttack;
+        } else if (playerStat == "special defense") {
+            playerScore = playerData.specialDefense;
+            computerScore = computerData.specialDefense;
+        } else if (playerStat == "speed") {
+            playerScore = playerData.speed;
+            computerScore = computerData.speed;
+        } else if (playerStat != "attack" || playerStat != "defense" || playerStat != "special attack" || playerStat != "special defense" || playerStat != "speed") {
+            computerPokeCard.setAttribute("hidden", true)
+            alert("please spell the stat correctly and in lower case")
 
+            return
+        }
+
+        totalPlayerPower.innerHTML = `your ${playerStat} is ${playerScore}`;
+        totalComputerPower.innerHTML = `the computer's ${playerStat}  is ${computerScore}`;
+
+        displayComputerPokemon(computerChoice)
         if (playerScore >= computerScore) {
-            result.innerHTML = "win"
+            result.innerHTML = "you win this round"
             gameRoundNumber++
             gameRound.innerHTML = `Game round: ${gameRoundNumber}`
             win++
             totals.innerHTML = `Win: ${win} Loses:${lose}`
 
         } else {
-            result.innerHTML = "lose"
+            result.innerHTML = "you lost this round"
             gameRoundNumber++
             gameRound.innerHTML = `Game round: ${gameRoundNumber}`
             lose++
@@ -131,13 +168,17 @@ async function fight() {
         totalComputerPower.innerHTML = ""
         playerPokeCard.setAttribute("hidden", true)
         computerPokeCard.setAttribute("hidden", true)
+        playerStatChoice.setAttribute("hidden", true)
+        win = 0;
+        lose = 0;
+        totals.innerHTML = `Win: ${win} Loses:${lose}`
     }
-
 }
 
 
-//plan tourny
-// create game round variable
-// after each round add 1 to ther variable
-// after 6 rounds give the final score
-// reset the variable and the scores
+
+//plan
+// allow player to choose a stat
+// add checkboc to each stat
+// when checkbox is ticked and enter pressed
+// compare that stat to computer sta
