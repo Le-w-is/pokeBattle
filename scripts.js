@@ -22,6 +22,9 @@ let computerSpecialDefense = document.querySelector("#computerSpecialDefense");
 let computerPokemonChoice = document.querySelector("#computerPokemonChoice");
 let gameRoundNumber = 0;
 let gameRound = document.querySelector("#gameRound");
+let playerPokeCard = document.querySelector("#playerPokeCard")
+let computerPokeCard = document.querySelector("#computerPokeCard")
+
 
 //choice variables
 let playerPokemonChoice = document.querySelector("#playerPokemonChoice");
@@ -29,6 +32,7 @@ let computerChoice = Math.floor(Math.random() * 1009);
 
 
 // result variables
+let resultsBox = document.querySelector("#resultsBox")
 let totalPlayerPower = document.querySelector("#totalPlayerPower")
 let totalComputerPower = document.querySelector("#totalComputerPower")
 let result = document.querySelector("#result");
@@ -47,6 +51,8 @@ function handlePlayerPokemon(e) {
     if (e.key == `Enter`) {
         playerChoice = playerPokemonChoice.value;
         computerChoice = Math.floor(Math.random() * 1009)
+        playerPokeCard.removeAttribute("hidden")
+        computerPokeCard.removeAttribute("hidden")
         displayPlayerPokemon(playerChoice);
         displayComputerPokemon(computerChoice);
         fight();
@@ -97,8 +103,6 @@ async function fight() {
         let computerData = await getPokemonData(computerChoice);
         let playerScore = playerData.hp + playerData.attack + playerData.defense + playerData.specialAttack + playerData.specialDefense + playerData.speed
         let computerScore = computerData.hp + computerData.attack + computerData.defense + computerData.specialAttack + computerData.specialDefense + computerData.speed
-
-
         totalPlayerPower.innerHTML = `your player score is ${playerScore}     `;
         totalComputerPower.innerHTML = `the computer score is ${computerScore}     `;
 
@@ -108,22 +112,25 @@ async function fight() {
             gameRoundNumber++
             gameRound.innerHTML = `Game round: ${gameRoundNumber}`
             win++
+            totals.innerHTML = `Win: ${win} Loses:${lose}`
 
         } else {
             result.innerHTML = "lose"
             gameRoundNumber++
             gameRound.innerHTML = `Game round: ${gameRoundNumber}`
             lose++
-
+            totals.innerHTML = `Win: ${win} Loses:${lose}`
         }
     } else if (gameRoundNumber >= 6) {
         gameRoundNumber = 0;
         result.innerHTML = ""
-        gameRound.innerHTML = `Game round: ${gameRoundNumber}`
+        gameRound.innerHTML = `Choose another pokemon to play again`
         playerChoice = ""
         computerChoice = ""
         totalPlayerPower.innerHTML = ""
         totalComputerPower.innerHTML = ""
+        playerPokeCard.setAttribute("hidden", true)
+        computerPokeCard.setAttribute("hidden", true)
     }
 
 }

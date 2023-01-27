@@ -17,7 +17,7 @@
 
 
 //competition
-// allow the player to play six times (a full team in pokemon)
+// allow the player to play six times (a full team in pokemon) ✅
 // tally up the wins and losses on each round to provide a total
 // declare the winner after six rounds and reset the scores
 
