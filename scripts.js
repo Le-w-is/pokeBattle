@@ -20,6 +20,8 @@ let computerSpeed = document.querySelector("#computerSpeed");
 let computerSpecialAttack = document.querySelector("#computerSpecialAttack");
 let computerSpecialDefense = document.querySelector("#computerSpecialDefense");
 let computerPokemonChoice = document.querySelector("#computerPokemonChoice");
+let gameRoundNumber = 0;
+let gameRound = document.querySelector("#gameRound");
 
 //choice variables
 let playerPokemonChoice = document.querySelector("#playerPokemonChoice");
@@ -37,7 +39,6 @@ let lose = 0;
 
 //EVENT LISTENERS
 playerPokemonChoice.addEventListener(`keydown`, handlePlayerPokemon);
-
 
 //FUNCTIONS
 
@@ -91,22 +92,45 @@ async function displayComputerPokemon() {
 // function that tallies up the total score for each pokemon, compares the two, then provides the result
 
 async function fight() {
-    let playerData = await getPokemonData(playerChoice);
-    let computerData = await getPokemonData(computerChoice);
-    let playerScore = playerData.hp + playerData.attack + playerData.defense + playerData.specialAttack + playerData.specialDefense + playerData.speed
-    let computerScore = computerData.hp + computerData.attack + computerData.defense + computerData.specialAttack + computerData.specialDefense + computerData.speed
+    if (gameRoundNumber < 6) {
+        let playerData = await getPokemonData(playerChoice);
+        let computerData = await getPokemonData(computerChoice);
+        let playerScore = playerData.hp + playerData.attack + playerData.defense + playerData.specialAttack + playerData.specialDefense + playerData.speed
+        let computerScore = computerData.hp + computerData.attack + computerData.defense + computerData.specialAttack + computerData.specialDefense + computerData.speed
 
 
-    totalPlayerPower.innerHTML = `your player score is ${playerScore}     `;
-    totalComputerPower.innerHTML = `the computer score is ${computerScore}     `;
+        totalPlayerPower.innerHTML = `your player score is ${playerScore}     `;
+        totalComputerPower.innerHTML = `the computer score is ${computerScore}     `;
 
 
-    if (playerScore >= computerScore) {
-        result.innerHTML = "win"
-        win++
-    } else {
-        result.innerHTML = "lose"
-        lose++
+        if (playerScore >= computerScore) {
+            result.innerHTML = "win"
+            gameRoundNumber++
+            gameRound.innerHTML = `Game round: ${gameRoundNumber}`
+            win++
+
+        } else {
+            result.innerHTML = "lose"
+            gameRoundNumber++
+            gameRound.innerHTML = `Game round: ${gameRoundNumber}`
+            lose++
+
+        }
+    } else if (gameRoundNumber >= 6) {
+        gameRoundNumber = 0;
+        result.innerHTML = ""
+        gameRound.innerHTML = `Game round: ${gameRoundNumber}`
+        playerChoice = ""
+        computerChoice = ""
+        totalPlayerPower.innerHTML = ""
+        totalComputerPower.innerHTML = ""
     }
-};
 
+}
+
+
+//plan tourny
+// create game round variable
+// after each round add 1 to ther variable
+// after 6 rounds give the final score
+// reset the variable and the scores
